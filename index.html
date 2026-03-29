@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Freyja Feeney — Game Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f9f8f6;
+      --ink: #1c1b19;
+      --mid: #7a7670;
+      --light: #c8c4bc;
+      --rule: #e4e0da;
+      --accent: #c0392b;
+      --white: #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Mono', monospace;
+      background: var(--bg);
+      color: var(--ink);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 2.5rem;
+      background: rgba(249,248,246,0.94);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--rule);
+    }
+    .nav-logo {
+      font-family: 'Spectral', serif;
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--mid);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--ink); }
+
+    #hero {
+      padding: 14rem 2.5rem 7rem;
+      max-width: 1080px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: end;
+    }
+    .hero-eyebrow {
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 1.8rem;
+    }
+    h1 {
+      font-family: 'Spectral', serif;
+      font-weight: 300;
+      font-size: clamp(2.8rem, 5vw, 4.8rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 2.2rem;
+    }
+    h1 em { font-style: italic; color: var(--mid); }
+    .hero-desc {
+      font-size: 0.82rem;
+      line-height: 1.8;
+      color: var(--mid);
+      max-width: 380px;
+      margin-bottom: 2.5rem;
+    }
+    .hero-links { display: flex; gap: 1.2rem; align-items: center; }
+    .link-primary {
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--white);
+      background: var(--ink);
+      padding: 0.6rem 1.2rem;
+      transition: background 0.15s;
+    }
+    .link-primary:hover { background: var(--accent); }
+    .link-secondary {
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--mid);
+      border-bottom: 1px solid var(--rule);
+      padding-bottom: 1px;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .link-secondary:hover { color: var(--ink); border-color: var(--ink); }
+
+    .hero-right { display: flex; flex-direction: column; padding-bottom: 0.5rem; }
+    .hero-stat {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--rule);
+      padding: 0.75rem 0;
+    }
+    .hero-stat:first-child { border-top: 1px solid var(--rule); }
+    .hero-stat-label { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--light); }
+    .hero-stat-value { font-size: 0.75rem; color: var(--ink); text-align: right; }
+
+    hr { border: none; border-top: 1px solid var(--rule); max-width: 1080px; margin: 0 auto; }
+
+    section { padding: 5rem 2.5rem; max-width: 1080px; margin: 0 auto; }
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 3rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--rule);
+    }
+    .section-title {
+      font-family: 'Spectral', serif;
+      font-weight: 300;
+      font-size: 1.6rem;
+      letter-spacing: -0.01em;
+    }
+    .section-count { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--light); }
+
+    .games-list { display: flex; flex-direction: column; }
+    .game-row {
+      display: grid;
+      grid-template-columns: 260px 1fr auto;
+      gap: 2.5rem;
+      align-items: start;
+      padding: 2.2rem 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .game-row:first-child { border-top: 1px solid var(--rule); }
+
+    .game-thumb {
+      aspect-ratio: 16/10;
+      overflow: hidden;
+      background: var(--rule);
+      flex-shrink: 0;
+    }
+    .game-thumb img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: saturate(0.85);
+      transition: filter 0.3s, transform 0.4s;
+    }
+    .game-row:hover .game-thumb img { filter: saturate(1); transform: scale(1.04); }
+    .placeholder-thumb {
+      width: 100%; height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+    }
+    .pt-green { background: #dde8e0; }
+    .pt-warm { background: #ede8e0; }
+
+    .game-meta-top {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin-bottom: 0.7rem;
+      flex-wrap: wrap;
+    }
+    .game-name {
+      font-family: 'Spectral', serif;
+      font-weight: 300;
+      font-size: 1.3rem;
+      letter-spacing: -0.01em;
+    }
+    .game-status {
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.5rem;
+      border: 1px solid var(--rule);
+      color: var(--mid);
+    }
+    .status-done { border-color: #5a9a6a; color: #5a9a6a; }
+    .status-wip { border-color: #c0862b; color: #c0862b; }
+    .status-concept { border-color: var(--light); color: var(--light); }
+    .status-award { border-color: #c0392b; color: #c0392b; }
+    .status-collab { border-color: #a87fc9; color: #a87fc9; }
+    .status-ubi { border-color: #5ba4c7; color: #5ba4c7; }
+
+    .game-desc {
+      font-size: 0.78rem;
+      line-height: 1.75;
+      color: var(--mid);
+      margin-bottom: 1rem;
+      max-width: 520px;
+    }
+    .game-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .tag {
+      font-size: 0.6rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--light);
+      padding: 0.15rem 0.45rem;
+      border: 1px solid var(--rule);
+    }
+
+    .game-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: flex-end;
+      padding-top: 0.2rem;
+      white-space: nowrap;
+    }
+    .game-action-link {
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--mid);
+      transition: color 0.15s;
+    }
+    .game-action-link:hover { color: var(--ink); }
+    .game-action-link.primary {
+      color: var(--ink);
+      border-bottom: 1px solid var(--ink);
+      padding-bottom: 1px;
+    }
+    .game-action-link.primary:hover { color: var(--accent); border-color: var(--accent); }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0;
+    }
+    .skill-col {
+      border-right: 1px solid var(--rule);
+      padding: 0 1.5rem;
+    }
+    .skill-col:first-child { padding-left: 0; }
+    .skill-col:last-child { border-right: none; padding-right: 0; }
+    .skill-col-title {
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--light);
+      margin-bottom: 1rem;
+    }
+    .skill-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .skill-col li { font-size: 0.75rem; color: var(--ink); line-height: 1.4; }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: start;
+    }
+    .about-text p {
+      font-size: 0.82rem;
+      line-height: 1.9;
+      color: var(--mid);
+      margin-bottom: 1.1rem;
+    }
+    .about-text strong { color: var(--ink); font-weight: 400; }
+
+    .timeline { display: flex; flex-direction: column; }
+    .tl-item {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 1.5rem;
+      padding: 1.2rem 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .tl-item:first-child { border-top: 1px solid var(--rule); }
+    .tl-year { font-size: 0.65rem; letter-spacing: 0.08em; color: var(--light); padding-top: 0.1rem; }
+    .tl-content h4 {
+      font-family: 'Spectral', serif;
+      font-weight: 300;
+      font-size: 0.92rem;
+      color: var(--ink);
+      margin-bottom: 0.25rem;
+    }
+    .tl-content p { font-size: 0.72rem; color: var(--mid); line-height: 1.6; }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: start;
+    }
+    .contact-text p {
+      font-size: 0.82rem;
+      line-height: 1.9;
+      color: var(--mid);
+      margin-bottom: 1.5rem;
+    }
+    .contact-links-list { display: flex; flex-direction: column; }
+    .contact-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--rule);
+      text-decoration: none;
+      color: var(--ink);
+      transition: color 0.15s;
+    }
+    .contact-item:first-child { border-top: 1px solid var(--rule); }
+    .contact-item:hover { color: var(--accent); }
+    .contact-item-left { display: flex; flex-direction: column; gap: 0.2rem; }
+    .contact-item-platform { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--light); }
+    .contact-item-handle { font-size: 0.82rem; }
+    .contact-item-arrow { color: var(--light); font-size: 0.75rem; transition: color 0.15s; }
+    .contact-item:hover .contact-item-arrow { color: var(--accent); }
+
+    footer {
+      border-top: 1px solid var(--rule);
+      padding: 2rem 2.5rem;
+      max-width: 1080px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    footer span { font-size: 0.65rem; letter-spacing: 0.08em; color: var(--light); }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade   { animation: fadeIn 0.6s ease both; }
+    .fade-2 { animation: fadeIn 0.6s 0.1s ease both; }
+    .fade-3 { animation: fadeIn 0.6s 0.2s ease both; }
+
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+      #hero { grid-template-columns: 1fr; gap: 3rem; padding: 8rem 1.5rem 4rem; }
+      section { padding: 3.5rem 1.5rem; }
+      .game-row { grid-template-columns: 1fr; gap: 1rem; }
+      .game-thumb { max-width: 100%; }
+      .game-actions { flex-direction: row; }
+      .skills-grid { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+      .skill-col { border-right: none; padding: 0; }
+      .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      footer { flex-direction: column; gap: 0.5rem; }
+    }
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="#hero" class="nav-logo">Freyja Feeney</a>
+    <ul class="nav-links">
+      <li><a href="#games">Games</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div id="hero">
+    <div class="hero-left">
+      <p class="hero-eyebrow fade">Game Developer — Paris</p>
+      <h1 class="fade-2">Freyja<br><em>Feeney</em></h1>
+      <p class="hero-desc fade-3">M1 Computer Science, Sorbonne Université. Game programming mentee at Ubisoft Paris. I build games with hand-crafted art, narrative depth, and systems that feel good to play.</p>
+      <div class="hero-links fade-3">
+        <a href="#games" class="link-primary">View games</a>
+        <a href="mailto:freyjafeeney@gmail.com" class="link-secondary">freyjafeeney@gmail.com</a>
+      </div>
+    </div>
+    <div class="hero-right fade-3">
+      <div class="hero-stat">
+        <span class="hero-stat-label">Current role</span>
+        <span class="hero-stat-value">Ubisoft Paris Mentee</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-label">Education</span>
+        <span class="hero-stat-value">M1 CS — Sorbonne Université</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-label">Location</span>
+        <span class="hero-stat-value">Paris, France</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-label">Engines</span>
+        <span class="hero-stat-value">Unity · Godot · Ubisoft Next</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-label">Open to</span>
+        <span class="hero-stat-value">Indie dev roles &amp; internships</span>
+      </div>
+    </div>
+  </div>
+
+  <hr />
+
+  <section id="games">
+    <div class="section-header">
+      <h2 class="section-title">Games</h2>
+      <span class="section-count">7 projects</span>
+    </div>
+    <div class="games-list">
+
+      <div class="game-row">
+        <div class="game-thumb"><img src="IMG_7074.jpeg" alt="Cannon" /></div>
+        <div class="game-info">
+          <div class="game-meta-top">
+            <span class="game-name">Cannon</span>
+            <span class="game-status status-done">Completed</span>
+            <span class="game-status status-ubi">Ubisoft Mentorship</span>
+          </div>
+          <p class="game-desc">A pickpocket stealth game built in C++ as part of the Ubisoft Paris game programming mentorship, using the proprietary Next API. Features a Patroller AI chase system, NPC and player inventory, hand-drawn character art, and a tight gameplay loop.</p>
+          <div class="game-tags">
+            <span class="tag">C++</span><span class="tag">Ubisoft Next API</span><span class="tag">AI Patroller</span><span class="tag">Inventory System</span><span class="tag">Hand-drawn Art</span>
+          </div>
+        </div>
+        <div class="game-actions">
+          <a href="https://github.com/freyjafeeney11/DAU_Feeney" target="_blank" class="game-action-link primary">GitHub ↗</a>
+        </div>
+      </div>
+
+      <div class="game-row">
+        <div class="game-thumb"><img src="IMG_7075.jpeg" alt="Train to Teaberry" /></div>
+        <div class="game-info">
+          <div class="game-meta-top">
+            <span class="game-name">Train to Teaberry</span>
+            <span class="game-status status-wip">In Dev</span>
+            <span class="game-status status-collab">International Collab</span>
+          </div>
+          <p class="game-desc">A cozy alchemist RPG made collaboratively with a small international all-women game dev group I put together. You play an alchemist — receiving potion requests from NPCs, foraging and purchasing ingredients, and brewing from a recipe book. Features a potion satisfaction mechanic and hand-painted art. Built in Unity / C#.</p>
+          <div class="game-tags">
+            <span class="tag">Unity</span><span class="tag">C#</span><span class="tag">Foraging</span><span class="tag">Recipe Mechanic</span><span class="tag">NPC Quests</span><span class="tag">Hand-painted Art</span>
+          </div>
+        </div>
+        <div class="game-actions">
+          <a href="https://github.com/freyjafeeney11/Train-2-Teaberry" target="_blank" class="game-action-link primary">GitHub ↗</a>
+        </div>
+      </div>
+
+      <div class="game-row">
+        <div class="game-thumb"><img src="IMG_7073.jpeg" alt="Elysium" /></div>
+        <div class="game-info">
+          <div class="game-meta-top">
+            <span class="game-name">Elysium</span>
+            <span class="game-status status-wip">In Dev</span>
+          </div>
+          <p class="game-desc">A sci-fi cyberpunk 2D side-scrolling platformer set in a neon city. Features dynamic parallax backgrounds, pixel art made in Aseprite, enemy encounters, and branching dialogue. Built in Unity.</p>
+          <div class="game-tags">
+            <span class="tag">Unity</span><span class="tag">C#</span><span class="tag">Aseprite</span><span class="tag">Pixel Art</span><span class="tag">Parallax</span>
+          </div>
+        </div>
+        <div class="game-actions">
+          <a href="https://f3if.itch.io/elysium" target="_blank" class="game-action-link primary">Play ↗</a>
+          <a href="https://github.com/freyjafeeney11/Elysium" target="_blank" class="game-action-link">GitHub ↗</a>
+        </div>
+      </div>
+
+      <div class="game-row">
+        <div class="game-thumb"><img src="IMG_7072.jpeg" alt="PostMan" /></div>
+        <div class="game-info">
+          <div class="game-meta-top">
+            <span class="game-name">PostMan</span>
+            <span class="game-status status-wip">In Dev</span>
+          </div>
+          <p class="game-desc">A chaotic postal fantasy in Godot — the local postman has been caught eating all the mail. Drag letters into the player's mouth to consume them. Hand-illustrated art, browser playable. Rated 5★ on itch.io.</p>
+          <div class="game-tags">
+            <span class="tag">Godot</span><span class="tag">GDScript</span><span class="tag">Hand-drawn Art</span><span class="tag">Browser</span>
+          </div>
+        </div>
+        <div class="game-actions">
+          <a href="https://f3if.itch.io/eatpaper" target="_blank" class="game-action-link primary">Play ↗</a>
+          <a href="https://github.com/freyjafeeney11" target="_blank" class="game-action-link">GitHub ↗</a>
+        </div>
+      </div>
+
+      <div class="game-row">
+        <div class="game-thumb"><img src="IMG_7076.jpeg" alt="Lychee" /></div>
+        <div class="game-info">
+          <div class="game-meta-top">
+            <span class="game-name">Lychee</span>
+            <span class="game-status status-award">Top 3 — UVM CS Fair</span>
+          </div>
+          <p class="game-desc">A pixel art virtual pet mobile game for iOS built in Swift, with Google Firebase for persistent state and cloud sync. Players raise a digital companion across home, care, closet, and social activities. Placed Top 3 at UVM's Computer Science Fair.</p>
+          <div class="game-tags">
+            <span class="tag">Swift</span><span class="tag">Firebase</span><span class="tag">iOS</span><span class="tag">Pixel Art</span><span class="tag">Mobile</span>
+          </div>
+        </div>
+        <div class="game-actions">
+          <a href="https://github.com/freyjafeeney11/Lychee-MobileGame" target="_blank" class="game-action-link primary">GitHub ↗</a>
+        </div>
+      </div>
+
+      <div class="game-row">
+        <div class="game-thumb"><div class="placeholder-thumb pt-green">🇫🇷</div></div>
+        <div class="game-info">
+          <div class="game-meta-top">
+            <span class="game-name">Mimi</span>
+            <span class="game-status status-wip">Mostly Finished</span>
+          </div>
+          <p class="game-desc">An AI-powered French language tutor with a game-feel UI built in Godot, wrapping a fine-tuned Mistral 7B model. A personal project made while living in Paris.</p>
+          <div class="game-tags">
+            <span class="tag">Godot</span><span class="tag">GDScript</span><span class="tag">Mistral 7B</span><span class="tag">LLM Fine-tuning</span><span class="tag">AI</span>
+          </div>
+        </div>
+        <div class="game-actions">
+          <a href="https://github.com/freyjafeeney11/Mimi-Ai-French_Teacher" target="_blank" class="game-action-link primary">GitHub ↗</a>
+        </div>
+      </div>
+
+      <div class="game-row">
+        <div class="game-thumb"><div class="placeholder-thumb pt-warm">✍️</div></div>
+        <div class="game-info">
+          <div class="game-meta-top">
+            <span class="game-name">Whitepaper</span>
+            <span class="game-status status-concept">Concept</span>
+          </div>
+          <p class="game-desc">A top-down 2D RPG — you play as an uninspired writer in a surreal town full of peculiar locals, searching for the spark to write again. Narrative-driven with hand-crafted world design. Unity / C#.</p>
+          <div class="game-tags">
+            <span class="tag">Unity</span><span class="tag">C#</span><span class="tag">2D RPG</span><span class="tag">Narrative</span>
+          </div>
+        </div>
+        <div class="game-actions">
+          <a href="https://github.com/freyjafeeney11/whitepaper" target="_blank" class="game-action-link primary">GitHub ↗</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr />
+
+  <section id="skills">
+    <div class="section-header">
+      <h2 class="section-title">Skills</h2>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-col">
+        <div class="skill-col-title">Engines</div>
+        <ul><li>Unity</li><li>Godot</li><li>Ubisoft Next</li></ul>
+      </div>
+      <div class="skill-col">
+        <div class="skill-col-title">Languages</div>
+        <ul><li>C++</li><li>C#</li><li>GDScript</li><li>Python</li><li>Swift</li></ul>
+      </div>
+      <div class="skill-col">
+        <div class="skill-col-title">Art & Design</div>
+        <ul><li>Aseprite</li><li>Blender</li><li>Digital Illustration</li><li>Pixel Art</li></ul>
+      </div>
+      <div class="skill-col">
+        <div class="skill-col-title">AI / Research</div>
+        <ul><li>LLM Fine-tuning</li><li>PyBullet</li><li>CMA-ES</li><li>Evolutionary Algorithms</li></ul>
+      </div>
+      <div class="skill-col">
+        <div class="skill-col-title">Tools</div>
+        <ul><li>Git / GitHub</li><li>Firebase</li><li>YOLOv8</li><li>pygame</li></ul>
+      </div>
+      <div class="skill-col">
+        <div class="skill-col-title">Disciplines</div>
+        <ul><li>Gameplay Systems</li><li>AI / NPC Design</li><li>Accessibility</li><li>Game UI / UX</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <hr />
+
+  <section id="about">
+    <div class="section-header">
+      <h2 class="section-title">About</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>I'm <strong>Freyja Feeney</strong>, a game programmer in my M1 year at <strong>Sorbonne Université in Paris</strong> and a game programming mentee at <strong>Ubisoft Paris</strong>. My work sits at the intersection of systems programming, original art direction, and story.</p>
+        <p>My games tend to have strong visual identities — I do my own illustration and pixel art — and I'm drawn to projects where mechanics and narrative reinforce each other. I also care about accessibility: I've built an audio navigation system enabling visually impaired players to explore 3D environments.</p>
+        <p>I studied at the University of Vermont, where I worked in the <strong>Morphology, Evolution & Cognition Lab</strong> under Dr. Joshua Bongard, writing my honours thesis in evolutionary computation and building physics simulations for evolving robot morphologies in PyBullet.</p>
+        <p>I've put together and led small collaborative game dev groups — including an international all-women team that made Train to Teaberry together across time zones. I'm happiest on projects with weird premises and handmade aesthetics.</p>
+      </div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-year">2024–now</div>
+          <div class="tl-content">
+            <h4>Ubisoft Paris — Game Programming Mentee</h4>
+            <p>Industry mentorship in C++ game programming using the Ubisoft Next engine API.</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2024–now</div>
+          <div class="tl-content">
+            <h4>Sorbonne Université — M1 Computer Science</h4>
+            <p>DIGIT program. Game dev, HCI, evolutionary algorithms, AI.</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2020–2024</div>
+          <div class="tl-content">
+            <h4>University of Vermont — BSc CS, Honours</h4>
+            <p>GPA 3.83. Honours thesis in evolutionary computation. MEC Lab researcher under Dr. Bongard.</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2023</div>
+          <div class="tl-content">
+            <h4>Top 3 — UVM Computer Science Fair</h4>
+            <p>Lychee, a Swift + Firebase virtual pet mobile game.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr />
+
+  <section id="contact">
+    <div class="section-header">
+      <h2 class="section-title">Contact</h2>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-text">
+        <p>Open to indie game dev roles, game programming internships, and interesting collaborations. Based in Paris — open to remote and on-site.</p>
+        <a href="mailto:freyjafeeney@gmail.com" class="link-primary">freyjafeeney@gmail.com</a>
+      </div>
+      <div class="contact-links-list">
+        <a href="mailto:freyjafeeney@gmail.com" class="contact-item">
+          <div class="contact-item-left">
+            <span class="contact-item-platform">Email</span>
+            <span class="contact-item-handle">freyjafeeney@gmail.com</span>
+          </div>
+          <span class="contact-item-arrow">↗</span>
+        </a>
+        <a href="https://github.com/freyjafeeney11" target="_blank" class="contact-item">
+          <div class="contact-item-left">
+            <span class="contact-item-platform">GitHub</span>
+            <span class="contact-item-handle">freyjafeeney11</span>
+          </div>
+          <span class="contact-item-arrow">↗</span>
+        </a>
+        <a href="https://f3if.itch.io" target="_blank" class="contact-item">
+          <div class="contact-item-left">
+            <span class="contact-item-platform">itch.io</span>
+            <span class="contact-item-handle">f3if</span>
+          </div>
+          <span class="contact-item-arrow">↗</span>
+        </a>
+        <a href="https://www.linkedin.com/in/freyja-feeney" target="_blank" class="contact-item">
+          <div class="contact-item-left">
+            <span class="contact-item-platform">LinkedIn</span>
+            <span class="contact-item-handle">freyja-feeney</span>
+          </div>
+          <span class="contact-item-arrow">↗</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Freyja Feeney — Game Developer</span>
+    <span>Paris, 2026</span>
+  </footer>
+
+</body>
+</html>
